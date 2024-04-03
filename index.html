@@ -1,13 +1,34 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
   <head>
+  <style>
+  textarea {
+  padding: 12px 20px;
+  box-sizing: border-box;
+  border: 2px solid #ccc;
+  border-radius: 4px;
+  background-color: #f8f8f8;
+  font-size: 16px;
+  resize: none;
+}
+  </style>
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Vite + TS</title>
   </head>
   <body>
-    <div id="app"></div>
-    <script type="module" src="/src/main.ts"></script>
+    <div id="camera-view">
+      <div style="display: flex;">
+      <video id="video" style="flex-grow: 1; width: 50%;"  autoplay></video>
+      <textarea readonly style="flex-grow: 1; width: 50%;" id="ocr-result" ></textarea>
+      </div>
+      <button id="start-btn">Start</button>
+      <button id="capture-btn">Capture</button>
+    </div>
+  <script src='https://cdn.jsdelivr.net/npm/tesseract.js@5/dist/tesseract.min.js'></script>
+    <script type="module" src="/src/main.ts">
+    </script>
   </body>
 </html>
+
