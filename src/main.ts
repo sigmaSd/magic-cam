@@ -1,19 +1,38 @@
 /// <reference lib="dom" />
-/// <reference lib="dom" />
 const video = document.getElementById("video");
 const canvas = document.createElement("canvas");
 const ocrResult = document.getElementById("ocr-result");
 const captureBtn = document.getElementById("capture-btn");
 const startBtn = document.getElementById("start-btn");
+const switchCameraBtn = document.getElementById("switch-camera-btn"); // Reference to the switch camera button
+
+let mediaStream; // Variable to store the active media stream
 
 // Access the camera and stream video
-navigator.mediaDevices.getUserMedia({ video: true })
-  .then((stream) => {
-    video!.srcObject = stream;
-  })
-  .catch((err) => {
+async function startCamera() {
+  try {
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: "environment" },
+    });
+    video.srcObject = mediaStream;
+  } catch (err) {
     console.error("Error accessing the camera: ", err);
-  });
+  }
+}
+
+// Function to switch between front and back cameras
+async function switchCamera() {
+  // Stop the current stream
+  mediaStream.getTracks().forEach((track) => track.stop());
+
+  // Toggle between front and back camera
+  const facingMode = video.srcObject?.getVideoTracks()[0].getSettings()
+    .facingMode;
+  const newFacingMode = facingMode === "user" ? "environment" : "user";
+
+  // Start the new stream with the updated facing mode
+  await startCamera({ video: { facingMode: newFacingMode } });
+}
 
 // Capture image from video stream
 const worker = await Tesseract.createWorker("eng");
@@ -50,3 +69,10 @@ captureBtn.onclick = () => {
   startBtn.innerText = "Start";
   recognize();
 };
+
+switchCameraBtn.onclick = async () => {
+  await switchCamera();
+};
+
+// Start the camera when the page loads
+startCamera();
