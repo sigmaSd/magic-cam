@@ -18,15 +18,14 @@ async function startCamera(props = { video: { facingMode: "environment" } }) {
   }
 }
 
+let newFacingMode = "user";
 // Function to switch between front and back cameras
 async function switchCamera() {
   // Stop the current stream
   mediaStream.getTracks().forEach((track) => track.stop());
 
   // Toggle between front and back camera
-  const facingMode = video.srcObject?.getVideoTracks()[0].getSettings()
-    .facingMode;
-  const newFacingMode = facingMode === "user" ? "environment" : "user";
+  newFacingMode = newFacingMode === "user" ? "environment" : "user";
 
   // Start the new stream with the updated facing mode
   await startCamera({ video: { facingMode: newFacingMode } });
@@ -62,10 +61,10 @@ startBtn.onclick = () => {
   }
 };
 
-captureBtn.onclick = () => {
+captureBtn.onclick = async () => {
   stopAnim = true;
   startBtn.innerText = "Start";
-  recognize();
+  await recognize();
 };
 
 switchCameraBtn.onclick = async () => {
