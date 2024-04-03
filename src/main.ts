@@ -9,7 +9,7 @@ const switchCameraBtn = document.getElementById("switch-camera-btn"); // Referen
 let mediaStream; // Variable to store the active media stream
 
 // Access the camera and stream video
-async function startCamera(props) {
+async function startCamera(props = { video: { facingMode: "environment" } }) {
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia(props);
     video.srcObject = mediaStream;
@@ -73,4 +73,4 @@ switchCameraBtn.onclick = async () => {
 };
 
 // Start the camera when the page loads
-startCamera();
+await startCamera();
