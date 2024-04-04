@@ -66,7 +66,7 @@ async function switchCamera() {
   facingMode = facingMode === "user" ? "environment" : "user";
 
   // Start the new stream with the updated facing mode
-  await startCamera({ video: { facingMode: facingMode } });
+  await startCamera(facingMode);
 }
 
 async function recognize() {
