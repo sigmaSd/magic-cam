@@ -1,35 +1,81 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-  <head>
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="/vite.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Vite + TS</title>
   <style>
-  textarea {
-  padding: 12px 20px;
-  box-sizing: border-box;
-  border: 2px solid #ccc;
-  border-radius: 4px;
-  background-color: #f8f8f8;
-  font-size: 16px;
-  resize: none;
-}
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f2f2f2;
+      margin: 0;
+      padding: 0;
+    }
+
+    #camera-view {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 20px;
+      margin-top: 50px;
+    }
+
+    #video {
+      width: 100%;
+      max-width: 600px;
+      border-radius: 8px;
+      box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    textarea {
+      padding: 12px 20px;
+      box-sizing: border-box;
+      border: 2px solid #ccc;
+      border-radius: 4px;
+      background-color: #fff;
+      font-size: 16px;
+      resize: none;
+      width: 100%;
+      max-width: 600px;
+      margin-top: 20px;
+    }
+
+    .button-group {
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 12px 24px;
+      font-size: 16px;
+      border: none;
+      border-radius: 6px;
+      background-color: #4CAF50;
+      color: white;
+      margin: 0 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+      box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
   </style>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Vite + TS</title>
-  </head>
-  <body>
-    <div id="camera-view">
-      <div style="display: flex;">
-      <video id="video" style="flex-grow: 1; width: 50%;"  autoplay></video>
-      <textarea readonly style="flex-grow: 1; width: 50%;" id="ocr-result" ></textarea>
-      </div>
+</head>
+<body>
+  <div id="camera-view">
+    <video id="video" autoplay></video>
+    <textarea readonly id="ocr-result" placeholder="Text recognized from the video will appear here"></textarea>
+    <div class="button-group">
       <button id="start-btn">Start</button>
       <button id="capture-btn">Capture</button>
       <button id="switch-camera-btn">Switch Camera</button>
     </div>
-    </div>
-    <script type="module" src="/src/main.ts">
-    </script>
-  </body>
+  </div>
+  <script type="module" src="/src/main.ts"></script>
+</body>
 </html>
 
