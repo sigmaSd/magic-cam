@@ -9,7 +9,7 @@ const startBtn = document.getElementById("start-btn")!;
 const switchCameraBtn = document.getElementById("switch-camera-btn")!; // Reference to the switch camera button
 
 let mediaStream: MediaStream; // Variable to store the active media stream
-let facingMode = "user";
+let facingMode = "environment";
 let stopAnim = false;
 let worker: TesseractWorker;
 
