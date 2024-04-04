@@ -1,23 +1,47 @@
+// deno-lint-ignore-file no-explicit-any
 /// <reference lib="dom" />
-const video = document.getElementById("video") as HTMLVideoElement;
+import { createWorker, type Worker as TesseractWorker } from "tesseract.js";
+const video = document.getElementById("video")! as HTMLVideoElement;
 const canvas = document.createElement("canvas");
-const ocrResult = document.getElementById("ocr-result");
-const captureBtn = document.getElementById("capture-btn");
-const startBtn = document.getElementById("start-btn");
-const switchCameraBtn = document.getElementById("switch-camera-btn"); // Reference to the switch camera button
+const ocrResult = document.getElementById("ocr-result")! as HTMLTextAreaElement;
+const captureBtn = document.getElementById("capture-btn")!;
+const startBtn = document.getElementById("start-btn")!;
+const switchCameraBtn = document.getElementById("switch-camera-btn")!; // Reference to the switch camera button
 
 let mediaStream: MediaStream; // Variable to store the active media stream
 let newFacingMode = "user";
 let stopAnim = false;
-let worker;
+let worker: TesseractWorker;
 
 // MAIN
 
 // Capture image from video stream
-Tesseract.createWorker("eng").then((res: any) => worker = res);
+createWorker("eng").then((res: any) => worker = res);
 // Start the camera when the page loads
 startCamera();
 
+startBtn.onclick = () => {
+  if (startBtn.innerText === "Start") {
+    stopAnim = false;
+    requestAnimationFrame(recognize);
+    startBtn.innerText = "Stop";
+  } else {
+    stopAnim = true;
+    startBtn.innerText = "Start";
+  }
+};
+
+captureBtn.onclick = async () => {
+  stopAnim = true;
+  startBtn.innerText = "Start";
+  await recognize();
+};
+
+switchCameraBtn.onclick = async () => {
+  stopAnim = true;
+  startBtn.innerText = "Start";
+  await switchCamera();
+};
 //END
 
 // Access the camera and stream video
@@ -25,7 +49,7 @@ async function startCamera(props = { video: { facingMode: "environment" } }) {
   try {
     mediaStream = await navigator.mediaDevices.getUserMedia(props);
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
-    video!.srcObject! = mediaStream;
+    video.srcObject = mediaStream;
   } catch (err) {
     console.error("Error accessing the camera: ", err);
   }
@@ -46,7 +70,7 @@ async function switchCamera() {
 async function recognize() {
   canvas.width = video.videoWidth;
   canvas.height = video.videoHeight;
-  canvas.getContext("2d").drawImage(video, 0, 0, canvas.width, canvas.height);
+  canvas.getContext("2d")!.drawImage(video, 0, 0, canvas.width, canvas.height);
 
   // Convert captured image to base64
   const imageData = canvas.toDataURL("image/png");
@@ -56,24 +80,3 @@ async function recognize() {
 
   if (!stopAnim) requestAnimationFrame(recognize);
 }
-
-startBtn.onclick = () => {
-  if (startBtn.innerText === "Start") {
-    stopAnim = false;
-    requestAnimationFrame(recognize);
-    startBtn.innerText = "Stop";
-  } else {
-    stopAnim = true;
-    startBtn.innerText = "Start";
-  }
-};
-
-captureBtn.onclick = async () => {
-  stopAnim = true;
-  startBtn.innerText = "Start";
-  await recognize();
-};
-
-switchCameraBtn.onclick = async () => {
-  await switchCamera();
-};
