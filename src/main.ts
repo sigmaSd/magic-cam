@@ -77,10 +77,7 @@ async function recognize() {
   // Convert captured image to base64
   const imageData = canvas.toDataURL("image/png");
 
-  const a = performance.now();
   const ret = await worker.recognize(imageData);
-  const b = performance.now();
-  alert(b - a);
   ocrResult.value = ret.data.text;
 
   if (!stopAnim) requestAnimationFrame(recognize);
