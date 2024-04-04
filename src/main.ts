@@ -9,7 +9,7 @@ const startBtn = document.getElementById("start-btn")!;
 const switchCameraBtn = document.getElementById("switch-camera-btn")!; // Reference to the switch camera button
 
 let mediaStream: MediaStream; // Variable to store the active media stream
-let newFacingMode = "user";
+let facingMode = "user";
 let stopAnim = false;
 let worker: TesseractWorker;
 
@@ -18,7 +18,7 @@ let worker: TesseractWorker;
 // Capture image from video stream
 createWorker("eng").then((res: any) => worker = res);
 // Start the camera when the page loads
-startCamera();
+startCamera(facingMode);
 
 startBtn.onclick = () => {
   if (startBtn.innerText === "Start") {
@@ -45,9 +45,11 @@ switchCameraBtn.onclick = async () => {
 //END
 
 // Access the camera and stream video
-async function startCamera(props = { video: { facingMode: "environment" } }) {
+async function startCamera(mode: any) {
   try {
-    mediaStream = await navigator.mediaDevices.getUserMedia(props);
+    mediaStream = await navigator.mediaDevices.getUserMedia({
+      video: { facingMode: mode },
+    });
     // biome-ignore lint/style/noNonNullAssertion: <explanation>
     video.srcObject = mediaStream;
   } catch (err) {
@@ -61,10 +63,10 @@ async function switchCamera() {
   mediaStream.getTracks().forEach((track) => track.stop());
 
   // Toggle between front and back camera
-  newFacingMode = newFacingMode === "user" ? "environment" : "user";
+  facingMode = facingMode === "user" ? "environment" : "user";
 
   // Start the new stream with the updated facing mode
-  await startCamera({ video: { facingMode: newFacingMode } });
+  await startCamera({ video: { facingMode: facingMode } });
 }
 
 async function recognize() {
@@ -75,7 +77,10 @@ async function recognize() {
   // Convert captured image to base64
   const imageData = canvas.toDataURL("image/png");
 
+  const a = performance.now();
   const ret = await worker.recognize(imageData);
+  const b = performance.now();
+  alert(b - a);
   ocrResult.value = ret.data.text;
 
   if (!stopAnim) requestAnimationFrame(recognize);
