@@ -33,7 +33,12 @@ createWorker("eng").then((res: any) => worker = res);
 // Start the camera when the page loads
 startCamera(facingMode);
 
-startBtn.onclick = () => {
+startBtn.onclick = async () => {
+  if (!worker) {
+    showLoadingSpinner();
+    while (!worker) await new Promise((r) => setTimeout(r, 100));
+    hideLoadingSpinner();
+  }
   if (startBtn.innerText === "Start") {
     stopAnim = false;
     requestAnimationFrame(recognize);
@@ -45,6 +50,11 @@ startBtn.onclick = () => {
 };
 
 captureBtn.onclick = async () => {
+  if (!worker) {
+    showLoadingSpinner();
+    while (!worker) await new Promise((r) => setTimeout(r, 100));
+    hideLoadingSpinner();
+  }
   stopAnim = true;
   startBtn.innerText = "Start";
 
