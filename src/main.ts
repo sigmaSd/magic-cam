@@ -48,11 +48,13 @@ captureBtn.onclick = async () => {
   stopAnim = true;
   startBtn.innerText = "Start";
 
+  video.pause();
   showLoadingSpinner(); // Show loading spinner when capture button is clicked
 
   await recognize(); // Wait for recognition to finish
 
   hideLoadingSpinner(); // Hide loading spinner after recognition is done
+  video.play();
 };
 switchCameraBtn.onclick = async () => {
   stopAnim = true;
