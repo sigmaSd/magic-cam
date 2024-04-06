@@ -1,0 +1,12 @@
+{
+  "name": "Magic Camera",
+  "start_url": "/",
+  "display": "standalone",
+  "icons": [
+    {
+      "src": "/cam.svg",
+      "type": "image/svg",
+      "sizes": "1200x1200"
+    }
+  ]
+}
