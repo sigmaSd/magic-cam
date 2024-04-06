@@ -4,9 +4,22 @@
   "display": "standalone",
   "icons": [
     {
-      "src": "/cam.svg",
+      "src": "/cam.png",
+      "type": "image/png",
+      "sizes": "144x144"
+    }
+   ],
+    "screenshots": [
+    {
+      "src": "/cam320.svg",
+      "sizes": "320x320",
+      "type": "image/svg"
+    },
+    {
+      "src": "/cam320.svg",
+      "sizes": "320x320",
       "type": "image/svg",
-      "sizes": "1200x1200"
+      "form_factor": "wide"
     }
   ]
 }
