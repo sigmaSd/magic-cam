@@ -14,7 +14,20 @@ let stopAnim = false;
 let worker: TesseractWorker;
 
 // MAIN
+// Function to show loading spinner
+function showLoadingSpinner() {
+  const spinner = document.createElement("div");
+  spinner.classList.add("spinner");
+  document.body.appendChild(spinner);
+}
 
+// Function to hide loading spinner
+function hideLoadingSpinner() {
+  const spinner = document.querySelector(".spinner");
+  if (spinner) {
+    spinner.remove();
+  }
+}
 // Capture image from video stream
 createWorker("eng").then((res: any) => worker = res);
 // Start the camera when the page loads
@@ -34,9 +47,13 @@ startBtn.onclick = () => {
 captureBtn.onclick = async () => {
   stopAnim = true;
   startBtn.innerText = "Start";
-  await recognize();
-};
 
+  showLoadingSpinner(); // Show loading spinner when capture button is clicked
+
+  await recognize(); // Wait for recognition to finish
+
+  hideLoadingSpinner(); // Hide loading spinner after recognition is done
+};
 switchCameraBtn.onclick = async () => {
   stopAnim = true;
   startBtn.innerText = "Start";
